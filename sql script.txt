@@ -1,0 +1,92 @@
+create table if not exists Category (
+  Id serial primary key,
+  Name varchar(30) not null unique
+);
+
+insert into Category (Name)
+values ('Торт'), ('Пирожное'), ('Мороженое'), ('Эклеры'), ('Вафли'), ('Блины');
+
+create table if not exists Candy (
+  Id serial primary key,
+  Name varchar(30) not null unique,
+  Price integer not null,
+  Size integer not null,
+  Quantity integer not null,
+  CategoryId integer not null,
+  foreign key (CategoryId) references Category(Id)
+);
+
+insert into Candy (Name, Price, Size, Quantity, CategoryId)
+values ('Торт Наполеон', 3000, 20, 10, 1),
+    ('Торт Прага', 1500, 15, 12, 1),
+    ('Торт Графские развалины', 1700, 22, 5, 1),
+    ('Вафли с кремом', 800, 11, 7, 5),
+    ('Мороженое Симка', 25000, 100, 3, 3);
+
+
+create table if not exists Role (
+ Id serial primary key,
+ Name varchar(30) not null unique
+);
+
+insert into Role (Name) values ('admin'), ('user'), ('moderator');
+
+create table if not exists Client (
+  Id serial primary key,
+  FirstName varchar(30) not null,
+  LastName varchar(30) not null,
+  Username varchar(30) not null unique,
+  Password varchar(30) not null,
+  Email varchar(30) not null unique,
+  Phone varchar(15) not null unique,
+  RoleId integer not null,
+  foreign key (RoleId) references Role(Id)
+);
+
+insert into Client (FirstName, LastName, Username, Password, Email, Phone, RoleId)
+values ('Oleg', 'Krotov', 'olegk', '1234', 'olegk@gmail.com', '+79222313151', 1),
+('Eblan', 'Govnojopov', 'eblan', '123', 'eblan@gmail.com', '+79222313131', 2);
+
+create table if not exists Cart (
+ Id serial primary key,
+ ClientId integer not null
+);
+
+create table if not exists CartItem (
+ Id serial primary key,
+ CartId integer not null,
+ CandyId integer not null,
+ Quantity integer not null,
+ foreign key (CartId) references Cart(Id),
+ foreign key (CandyId) references Candy(Id)
+);
+
+create table if not exists "Order" (
+ Id serial primary key,
+ ClientId integer not null,  
+ OrderDate date not null,
+ TotalAmount integer not null,
+ foreign key (ClientId) references Client(Id) 
+);
+
+create table if not exists OrderItem (
+ Id serial primary key,
+ OrderId integer not null,
+ CandyId integer not null,
+ Price integer not null,
+ IsPickedUp bool default false,
+ Quantity integer not null,
+ foreign key (OrderId) references "Order" (Id),
+ foreign key (CandyId) references Candy (Id)
+);
+
+-- drop table OrderItem;
+
+select * from Category;
+select * from Candy;
+select * from Role;
+select * from Client;
+select * from Cart;
+select * from CartItem;
+select * from "Order";
+select * from OrderItem;
