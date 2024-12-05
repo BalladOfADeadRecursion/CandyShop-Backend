@@ -1,38 +1,59 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
+﻿// Подключение необходимых пространств имен для работы с аттрибутами, аннотациями и сериализацией
+using System.ComponentModel.DataAnnotations; // Для работы с аттрибутами данных (например, Key, Column)
+using System.ComponentModel.DataAnnotations.Schema; // Для работы с аттрибутами схемы базы данных (например, Table, Column)
+using System.Text.Json.Serialization; // Для работы с сериализацией в JSON, включая игнорирование свойств
 
 namespace WebApi.Models
 {
+    // Атрибут, указывающий, что эта модель будет отображаться в таблице "candy" в базе данных
     [Table("candy")]
     public class Candy
     {
+        // Атрибут, указывающий на то, что это поле соответствует столбцу "id" в таблице
         [Column("id")]
+        // Атрибут, указывающий, что это поле является первичным ключом таблицы
         [Key]
+        // Атрибут, указывающий, что значение для этого поля будет автоматически генерироваться в базе данных
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        // Свойство для идентификатора сладости, автоматически генерируемое в базе данных
         public long Id { get; set; }
 
+        // Атрибут, указывающий, что это свойство соответствует столбцу "name" в таблице
         [Column("name")]
+        // Свойство для названия сладости
         public string Name { get; set; }
 
+        // Атрибут, указывающий, что это свойство соответствует столбцу "price" в таблице
         [Column("price")]
+        // Свойство для цены сладости
         public int Price { get; set; }
 
+        // Атрибут, указывающий, что это свойство соответствует столбцу "size" в таблице
         [Column("size")]
+        // Свойство для размера сладости
         public int Size { get; set; }
 
+        // Атрибут, указывающий, что это свойство соответствует столбцу "quantity" в таблице
         [Column("quantity")]
+        // Свойство для количества сладости в наличии
         public int Quantity { get; set; }
 
+        // Атрибут, указывающий, что это свойство соответствует столбцу "categoryid" в таблице
         [Column("categoryid")]
+        // Свойство для идентификатора категории, к которой относится сладость
         public long CategoryId { get; set; }
 
+        // Свойство для навигации, представляющее категорию сладости (связь с моделью Category)
         public Category? Category { get; set; }
 
+        // Атрибут, указывающий, что это свойство не должно сериализоваться в JSON
         [JsonIgnore]
+        // Свойство для связи с коллекцией товаров в корзине (не будет сериализовано)
         public ICollection<CartItem> CartItems { get; set; }
 
+        // Атрибут, указывающий, что это свойство не должно сериализоваться в JSON
         [JsonIgnore]
+        // Свойство для связи с коллекцией позиций в заказах (не будет сериализовано)
         public ICollection<OrderItem> OrderItems { get; set; }
     }
 }
