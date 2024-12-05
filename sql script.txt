@@ -1,3 +1,4 @@
+--SQL код, который необходимо добавить в postgres
 create table if not exists Category (
   Id serial primary key,
   Name varchar(30) not null unique
